@@ -13,21 +13,11 @@ namespace Metozis.Cardistry.Internal.Meta.Core
     [Serializable]
     public class CardMeta : ActingEntityMeta
     {
-        public Sprite CardArt;
-        public Vector4 CardArtTransform;
+        [TitleGroup("Card options", Alignment = TitleAlignments.Centered)]
         [ValueDropdown("GetRarities")]
         public string Rarity;
 
-        private static IEnumerable GetRarities()
-        {
-            var list = new ValueDropdownList<string>();
-            foreach (var rarity in ManagersRoot.Instance.GetComponent<MetaManager>().Configuration.Rarities)
-            {
-                list.Add(rarity.Name, rarity.Name);
-            }
-
-            return list;
-        }
+        private static IEnumerable GetRarities() => MetaManager.GetRarities();
     }
 
     public abstract class CardFeature

@@ -31,11 +31,17 @@ namespace Metozis.Cardistry.Internal.Management
 
         private void Start()
         {
+            StartNewGame();
+        }
+
+        public void StartNewGame()
+        {
             CurrentGame = new Game
             {
                 AllyBoard = AllyBoard,
                 EnemyBoard = EnemyBoard,
-                AllyHand = AllyHand
+                AllyHand = AllyHand,
+                Scheduler = new GameScheduler()
             };
         }
     }

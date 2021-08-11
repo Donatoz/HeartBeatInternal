@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Metozis.Cardistry.Internal.Management;
 using Metozis.Cardistry.Internal.Meta.Core;
+using Metozis.Cardistry.Internal.Meta.UI;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace Metozis.Cardistry.Internal.Meta
         public static MetaManager Instance => ManagersRoot.Instance.Get<MetaManager>();
         
         public MetaManagerConfiguration Configuration;
+        public ColorScheme MainColorScheme;
         
         public static IEnumerable<string> GetStats()
         {
@@ -28,6 +30,11 @@ namespace Metozis.Cardistry.Internal.Meta
         public static IEnumerable<string> GetRarities()
         {
             return ManagersRoot.Instance.GetComponent<MetaManager>().Configuration.Rarities.Select(r => r.Name);
+        }
+
+        public static IEnumerable<string> GetOrders()
+        {
+            return ManagersRoot.Instance.GetComponent<MetaManager>().Configuration.DefaultOrders.Keys;
         }
     }
 }

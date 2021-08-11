@@ -63,19 +63,6 @@ namespace Metozis.Cardistry.Internal.Core.Entities
             };
 
             follow.EnableMovement = true;
-            
-            if (CardLogicMacro != null)
-            {
-                var lifeCycle = AddModule(new CardLifeCycle(this, GraphReference.New(CardLogicMacro, true)));
-                lifeCycle.OnDeath += delegate
-                {
-                    follow.Enabled = false;
-                };
-                lifeCycle.OnPlayBegin += delegate
-                {
-                    anim.PlayAnimation("CardPlay");
-                };
-            }
         }
 
         public override void Initialize()
@@ -93,6 +80,19 @@ namespace Metozis.Cardistry.Internal.Core.Entities
             if (MetaDescriptor != null)
             {
                 PopulateWithMeta(MetaDescriptor);
+            }
+            
+            if (CardLogicMacro != null)
+            {
+                var lifeCycle = AddModule(new CardLifeCycle(this, GraphReference.New(CardLogicMacro, true)));
+                lifeCycle.OnDeath += delegate
+                {
+                    follow.Enabled = false;
+                };
+                lifeCycle.OnPlayBegin += delegate
+                {
+                    anim.PlayAnimation("CardPlay");
+                };
             }
             
             base.Initialize();

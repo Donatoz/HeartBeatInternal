@@ -39,6 +39,7 @@ namespace Metozis.Cardistry.Internal.Core.Entities
 
         protected Action selectionPrePass;
         protected Action<ISelectable, List<ISelectable>> selectionPostPass;
+        
         protected HashSet<Validator> validationContext;
         protected bool validated;
 
@@ -64,8 +65,6 @@ namespace Metozis.Cardistry.Internal.Core.Entities
 
         protected override void Start()
         {
-            
-            
             base.Start();
             selectionPrePass = delegate
             {

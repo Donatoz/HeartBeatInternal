@@ -15,7 +15,7 @@ namespace Metozis.Cardistry.Internal.Meta
         public List<Rarity> Rarities;
         public List<StatGeneralMeta> Stats;
         public List<string> Attributes;
-        public Dictionary<string, OrderMeta> UnitOrders;
+        public Dictionary<string, OrderMeta> DefaultOrders;
         
         public Rarity GetRarity(string name)
         {

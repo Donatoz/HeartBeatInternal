@@ -10,9 +10,9 @@ namespace Metozis.Cardistry.Internal.VFX
     {
         public static VisualScheduler Instance => ManagersRoot.Instance.Get<VisualScheduler>();
         
-        private readonly Queue<ScheduleContext> schedule = new Queue<ScheduleContext>();
+        private readonly Queue<VFXScheduleContext> schedule = new Queue<VFXScheduleContext>();
 
-        public Action<ScheduleContext> OnVFXQueued;
+        public Action<VFXScheduleContext> OnVFXQueued;
 
         private void FixedUpdate()
         {
@@ -31,7 +31,7 @@ namespace Metozis.Cardistry.Internal.VFX
             }
         }
 
-        public void Schedule(ScheduleContext context)
+        public void Schedule(VFXScheduleContext context)
         {
             if (context.Instant)
             {
@@ -43,7 +43,7 @@ namespace Metozis.Cardistry.Internal.VFX
         }
     }
 
-    public struct ScheduleContext
+    public struct VFXScheduleContext
     {
         public VFXEntity Entity;
         public bool Instant;

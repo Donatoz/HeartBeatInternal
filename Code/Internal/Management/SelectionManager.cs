@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using Metozis.Cardistry.Internal.Core.Entities;
 using Metozis.Cardistry.Internal.Core.Interaction;
 using Sirenix.Utilities;
@@ -39,11 +40,20 @@ namespace Metozis.Cardistry.Internal.Management
         
         public IReadOnlyList<ISelectable> SelectedObjects => selected;
 
+        public Action<ISelectable> OnObjectSelected;
+
         private void Awake()
         {
             InputManager.Instance.RegisterInputAction("Fire", ctx =>
             {
                 if (InputManager.Instance.State.PointedEntity == null || !(InputManager.Instance.State.PointedEntity is ISelectable))
+                {
+                    DeselectAll();
+                }
+            });
+            InputManager.Instance.RegisterInputAction("SecondaryFire", ctx =>
+            {
+                if (ctx.performed)
                 {
                     DeselectAll();
                 }
@@ -65,6 +75,7 @@ namespace Metozis.Cardistry.Internal.Management
             
             selected.Add(selectable);
             selectable.Select();
+            OnObjectSelected?.Invoke(selectable);
             
             postPass?.Invoke(selectable, selected);
         }

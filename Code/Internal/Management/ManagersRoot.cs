@@ -37,6 +37,7 @@ namespace Metozis.Cardistry.Internal.Management
             managers[typeof(MetaManager)] = GetComponent<MetaManager>();
             managers[typeof(SelectionManager)] = GetComponent<SelectionManager>();
             managers[typeof(VisualScheduler)] = GetComponent<VisualScheduler>();
+            managers[typeof(VFXManager)] = GetComponent<VFXManager>();
         }
 
         public T Get<T>() where T : MonoBehaviour

@@ -17,6 +17,7 @@ namespace Metozis.Cardistry.Internal.Management
                     PrePass = delegate(Entity entity)
                     {
                         (entity as ActingEntity).Controller = sameOwner ? area.Owner : area.Owner.Opponent;
+                        (entity as Unit).UnitLogicMacro = descriptor.UnitLogicMacro;
                     }
                 });
             area.Add(unit);

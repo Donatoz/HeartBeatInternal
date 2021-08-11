@@ -1,13 +1,13 @@
 ﻿using System;
+using Metozis.Cardistry.Internal.GameFlow.Branching;
 
 namespace Metozis.Cardistry.Internal.GameFlow
 {
     public class GameCycle
     {
-        public GameState CurrentState { get; private set; }
-
         public ITurnMachine TurnMachine;
-
+        public IFlowBranch MainBranch;
+        
         private Player playerOne;
         private Player playerTwo;
 
@@ -24,8 +24,6 @@ namespace Metozis.Cardistry.Internal.GameFlow
             playerOne.Opponent = playerTwo;
             playerTwo.Opponent = playerOne;
             playerOne.IsActualPlayer = true;
-
-            CurrentState = new GameState();
         }
     }
 }

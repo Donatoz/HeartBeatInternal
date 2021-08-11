@@ -5,6 +5,7 @@ using Metozis.Cardistry.Internal.Core.Entities.Cards;
 using Metozis.Cardistry.Internal.Meta.Core;
 using Metozis.Cardistry.Internal.Meta.Core.CardFeatures;
 using Metozis.Cardistry.Internal.Meta.Core.CardVisualSchemes;
+using Metozis.Cardistry.Internal.Meta.Runtime;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -14,11 +15,15 @@ namespace Metozis.Cardistry.Internal.Meta.Descriptors
     public class CardMetaDescriptor : SerializedScriptableObject, IMetaDescriptor<CardMeta>
     {
         public CardMeta Meta;
+        [FoldoutGroup("Descriptor")]
         public ICardMainContext MainContext;
+        [FoldoutGroup("Descriptor")]
         public IVisualScheme VisualScheme;
+        [FoldoutGroup("Descriptor")]
         public List<CardFeature> Features;
+        [FoldoutGroup("Descriptor")]
         public FlowMacro CardLogicMacro;
-
+        
         public CardMeta GetMeta()
         {
             return Meta;

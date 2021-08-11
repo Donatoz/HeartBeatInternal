@@ -2,7 +2,7 @@
 
 namespace Metozis.Cardistry.Internal.Core.Utils
 {
-    public class RuntimeContext
+    public sealed class RuntimeContext
     {
         public EntityFactory<Card> CardFactory;
         public EntityFactory<Unit> UnitFactory;

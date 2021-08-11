@@ -8,6 +8,7 @@ using Metozis.Cardistry.Internal.Core.Construct;
 using Metozis.Cardistry.Internal.Core.Interaction;
 using Metozis.Cardistry.Internal.Core.Modularity;
 using Metozis.Cardistry.Internal.Core.Orders;
+using Metozis.Cardistry.Internal.GameFlow;
 using Metozis.Cardistry.Internal.GameFlow.LifeCycle;
 using Metozis.Cardistry.Internal.Meta;
 using Metozis.Cardistry.Internal.Meta.Core;
@@ -55,10 +56,6 @@ namespace Metozis.Cardistry.Internal.Core.Entities
                     ArtImage = artImage
                 }
             });
-            if (UnitLogicMacro != null)
-            {
-                var lifecycle = AddModule(new UnitLifeCycle(this, GraphReference.New(UnitLogicMacro, true)));
-            }
 
             validationContext = new HashSet<Validator>
             {
@@ -80,6 +77,7 @@ namespace Metozis.Cardistry.Internal.Core.Entities
             base.Start();
             OnDeath += delegate
             {
+                //TODO: Bind animation module to this context
                 Destroy(gameObject);
             };
             
@@ -113,6 +111,11 @@ namespace Metozis.Cardistry.Internal.Core.Entities
                 anim.PlayAnimation(selected ? "In" : "Out", true);
             };
             
+            if (UnitLogicMacro != null)
+            {
+                var lifecycle = AddModule(new UnitLifeCycle(this, GraphReference.New(UnitLogicMacro, true)));
+            }
+            
             base.Initialize();
         }
 
@@ -139,9 +142,9 @@ namespace Metozis.Cardistry.Internal.Core.Entities
 
             foreach (var orderSlot in unit.AvailableOrders)
             {
-                if (!orderSlot.IsOverride && !MetaManager.Instance.Configuration.UnitOrders.ContainsKey(orderSlot.OrderName)) continue;
+                if (!orderSlot.IsOverride && !MetaManager.Instance.Configuration.DefaultOrders.ContainsKey(orderSlot.OrderName)) continue;
                 
-                var orderMeta = MetaManager.Instance.Configuration.UnitOrders[orderSlot.OrderName];
+                var orderMeta = MetaManager.Instance.Configuration.DefaultOrders[orderSlot.OrderName];
                 var order = new FlowOrder(orderSlot.OverrideLogic ? orderSlot.OverrideLogic : orderMeta.OrderLogicMacro);
                 AvailableOrders[orderSlot.OrderName] = order;
             }
@@ -157,7 +160,7 @@ namespace Metozis.Cardistry.Internal.Core.Entities
 
         public void GiveOrder(IOrder order, params object[] args)
         {
-            order.Resolve(this, args);
+            Game.Current.Scheduler.Schedule(ScheduleContext.FromOrder(order, this, args));
         }
     }
 }

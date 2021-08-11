@@ -44,10 +44,10 @@ namespace Metozis.Cardistry.Internal.Core.Modularity
             base.Refresh(meta, hard);
             
             var cardMeta = meta as CardMeta;
-            Container.ArtImage.sprite = cardMeta.CardArt;
+            Container.ArtImage.sprite = cardMeta.Art;
             var artRect = Container.ArtImage.GetComponent<RectTransform>();
-            artRect.anchoredPosition3D = new Vector3(cardMeta.CardArtTransform.x, cardMeta.CardArtTransform.y, 0);
-            artRect.sizeDelta = new Vector2(cardMeta.CardArtTransform.z, cardMeta.CardArtTransform.w);
+            artRect.anchoredPosition3D = new Vector3(cardMeta.ArtTransform.x, cardMeta.ArtTransform.y, 0);
+            artRect.sizeDelta = new Vector2(cardMeta.ArtTransform.z, cardMeta.ArtTransform.w);
 
             if (!hard) return;
             

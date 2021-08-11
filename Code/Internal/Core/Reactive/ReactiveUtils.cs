@@ -18,9 +18,9 @@ namespace Metozis.Cardistry.Internal.Core.Reactive
             ctx.Invoke();
         }
 
-        public static void Interval(float interval, Action ctx, Func<bool> stop)
+        public static Coroutine Interval(float interval, Action ctx, Func<bool> stop)
         {
-            MonoBridge.Instance.StartCoroutine(IntervalRoutine(interval, ctx, stop));
+            return MonoBridge.Instance.StartCoroutine(IntervalRoutine(interval, ctx, stop));
         }
         
         private static IEnumerator IntervalRoutine(float interval, Action ctx, Func<bool> stop)

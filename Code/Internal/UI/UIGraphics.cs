@@ -12,7 +12,7 @@ namespace Metozis.Cardistry.Internal.UI
         
         // For inspector
         [SerializeField]
-        private bool readInitialValues;
+        protected bool readInitialValues;
 
         protected override void Awake()
         {
