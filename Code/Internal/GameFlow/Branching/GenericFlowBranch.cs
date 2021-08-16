@@ -2,39 +2,28 @@
 
 namespace Metozis.Cardistry.Internal.GameFlow.Branching
 {
-    public abstract class GenericFlowBranch : IFlowBranch
+    public class GenericFlowBranch : FlowBranch
     {
-        public Action OnFlowStart { get; set; }
-        public Action OnFlowEnd { get; set; }
-        public Action UpdateRequested { get; set; }
+        public static Func<BranchCreationContext, FlowBranch> Descriptor = context => new GenericFlowBranch(context.Parent);
 
-        protected readonly IFlowBranch parent;
-        
-        public GenericFlowBranch(IFlowBranch parent)
+        public GenericFlowBranch(FlowBranch parent) : base(parent)
         {
-            this.parent = parent;
         }
-        
-        public void TakeFlow()
+
+        public override bool TakeFlow()
         {
+            if (!base.TakeFlow()) return false;
+            
             parent.Interrupt();
-            OnFlowStart?.Invoke();
+            return true;
         }
 
-        public void ReturnFlow()
+        public override bool ReturnFlow()
         {
-            OnFlowEnd?.Invoke();
+            if (!base.ReturnFlow()) return false;
+            
             parent.Resume();
-        }
-
-        public virtual void Resume()
-        {
-            OnFlowStart?.Invoke();
-        }
-
-        public virtual void Interrupt()
-        {
-            OnFlowEnd?.Invoke();
+            return true;
         }
     }
 }
