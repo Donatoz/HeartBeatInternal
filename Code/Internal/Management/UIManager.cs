@@ -13,6 +13,8 @@ namespace Metozis.Cardistry.Internal.Management
     public class UIManager : SerializedMonoBehaviour
     {
         public static UIManager Instance => ManagersRoot.Instance.Get<UIManager>();
+
+        public Canvas MainCanvas;
         
         public GameObject UIObjectTemplate;
         public Dictionary<string, GameObject> ObjectsCache;
@@ -28,8 +30,15 @@ namespace Metozis.Cardistry.Internal.Management
 
         public Action<UIEntity> OnEntityRegistered;
 
+        private void Awake()
+        {
+            MainCanvas.renderMode = RenderMode.ScreenSpaceCamera;
+            MainCanvas.sortingOrder = 100;
+        }
+
         public void RegisterEntity(UIEntity e)
         {
+            if (e.BindId.IsNullOrWhitespace()) return;
             entityCache[e.BindId] = e;
             OnEntityRegistered?.Invoke(e);
         }
