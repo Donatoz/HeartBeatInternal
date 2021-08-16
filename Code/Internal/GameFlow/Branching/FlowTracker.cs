@@ -1,39 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Sirenix.Utilities;
 
 namespace Metozis.Cardistry.Internal.GameFlow.Branching
 {
     public sealed class FlowTracker
     {
-        public Action UpdateContext;
-        public readonly IFlowBranch Main;
+        public readonly FlowBranch Main;
         
-        private readonly List<IFlowBranch> subBranches = new List<IFlowBranch>();
+        private readonly List<FlowBranch> subBranches = new List<FlowBranch>();
 
-        public FlowTracker(IFlowBranch main)
+        public FlowTracker(FlowBranch main)
         {
             Main = main;
-            main.UpdateRequested += UpdateFlow;
+            Main.TakeFlow();
         }
 
-        public void AddBranch(IFlowBranch branch)
+        public void AddBranch(FlowBranch branch)
         {
             subBranches.Add(branch);
-            branch.TakeFlow();
         }
 
-        public void RemoveBranch(IFlowBranch branch)
+        public void RemoveBranch(FlowBranch branch)
         {
             if (subBranches.Contains(branch))
             {
                 subBranches.Remove(branch);
             }
-            branch.ReturnFlow();
         }
 
         public void UpdateFlow()
         {
-            UpdateContext?.Invoke();
+            if (Main.Running)
+            {
+                Main.UpdateRequested?.Invoke();
+            }
+            subBranches.Where(b => b.Alive && b.Running).ForEach(b => b.UpdateRequested?.Invoke());
         }
     }
 }

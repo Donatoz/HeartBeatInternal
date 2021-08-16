@@ -7,7 +7,7 @@ using Metozis.Cardistry.Internal.VFX;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Metozis.Cardistry.Internal.GameFlow.Branching
+namespace Metozis.Cardistry.Internal.GameFlow.Branching.DefaultBranches
 {
     public class TargetingBranch : GenericFlowBranch
     {
@@ -17,7 +17,7 @@ namespace Metozis.Cardistry.Internal.GameFlow.Branching
         private readonly ActingEntity caster;
         private VFXEntity targetingVfx;
         
-        public TargetingBranch(ActingEntity caster, IFlowBranch parent) : base(parent)
+        public TargetingBranch(ActingEntity caster, FlowBranch parent) : base(parent)
         {
             this.caster = caster;
             
