@@ -14,26 +14,8 @@ namespace Metozis.Cardistry.Internal.Management
         public delegate bool TypeSpecifiedPass(ISelectable selectable);
         public static SelectionManager Instance => ManagersRoot.Instance.Get<SelectionManager>();
 
-        public readonly Dictionary<Type, TypeSpecifiedPass> TypeSpecifiedPasses = new Dictionary<Type, TypeSpecifiedPass>
-        {
-            {
-                typeof(Unit),
-                selectable =>
-                {
-                    if (Instance.SelectedObjects.Any(s =>
-                        s is Unit act && selectable is Unit sAct && act.Controller != sAct.Controller))
-                    {
-                        Instance.SelectedObjects
-                            .Where(s => s is Unit)
-                            .Cast<Unit>()
-                            .ForEach(u => u.GiveOrder(u.AvailableOrders["UnitAttack"], selectable as Unit));
-                        Instance.DeselectAll();
-                        return false;
-                    }
-                    return true;
-                }
-            }
-        };
+        public readonly Dictionary<Type, TypeSpecifiedPass> TypeSpecifiedPasses =
+            new Dictionary<Type, TypeSpecifiedPass>();
         
         private List<ISelectable> selected = new List<ISelectable>();
         private List<ISelectable> previousSelected;
@@ -41,25 +23,9 @@ namespace Metozis.Cardistry.Internal.Management
         public IReadOnlyList<ISelectable> SelectedObjects => selected;
 
         public Action<ISelectable> OnObjectSelected;
+        public Action<ISelectable> OnObjectDeselected;
+        public Action OnDeselectedAll;
 
-        private void Awake()
-        {
-            InputManager.Instance.RegisterInputAction("Fire", ctx =>
-            {
-                if (InputManager.Instance.State.PointedEntity == null || !(InputManager.Instance.State.PointedEntity is ISelectable))
-                {
-                    DeselectAll();
-                }
-            });
-            InputManager.Instance.RegisterInputAction("SecondaryFire", ctx =>
-            {
-                if (ctx.performed)
-                {
-                    DeselectAll();
-                }
-            });
-        }
-        
         public void HandleSelection(ISelectable selectable, Action prePass = null, Action<ISelectable, List<ISelectable>> postPass = null)
         {
             if (selected.Contains(selectable)) return;
@@ -83,8 +49,13 @@ namespace Metozis.Cardistry.Internal.Management
         public void DeselectAll()
         {
             previousSelected = new List<ISelectable>(selected);
-            selected.ForEach(s => s.Deselect());
+            selected.ForEach(s =>
+            {
+                s.Deselect();
+                OnObjectDeselected?.Invoke(s);
+            });
             selected.Clear();
+            OnDeselectedAll?.Invoke();
         }
 
         public void RevertDeselect()

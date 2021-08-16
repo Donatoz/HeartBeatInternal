@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Metozis.Cardistry.Internal.Core.Entities;
 using Metozis.Cardistry.Internal.Core.Orders;
+using Metozis.Cardistry.Internal.GameFlow.Branching;
+using MiscUtil.Collections.Extensions;
 using UnityEngine;
 
 namespace Metozis.Cardistry.Internal.GameFlow
@@ -10,9 +12,13 @@ namespace Metozis.Cardistry.Internal.GameFlow
     {
         private readonly Queue<ScheduleContext> schedule = new Queue<ScheduleContext>();
         
-        public void Schedule(ScheduleContext context)
+        public void Schedule(ScheduleContext context, BranchCreationContext? branchContext = null)
         {
             schedule.Enqueue(context);
+            if (branchContext != null)
+            {
+                Game.Current.Cycle.Tracker.AddBranch(branchContext.Value.ToBranch(GenericFlowBranch.Descriptor));
+            }
             Refresh();
         }
 

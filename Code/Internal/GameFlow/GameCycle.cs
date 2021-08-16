@@ -6,7 +6,7 @@ namespace Metozis.Cardistry.Internal.GameFlow
     public class GameCycle
     {
         public ITurnMachine TurnMachine;
-        public IFlowBranch MainBranch;
+        public FlowTracker Tracker;
         
         private Player playerOne;
         private Player playerTwo;
@@ -14,6 +14,7 @@ namespace Metozis.Cardistry.Internal.GameFlow
         public GameCycle(ITurnMachine turnMachine)
         {
             TurnMachine = turnMachine;
+            Tracker = new FlowTracker(new AsyncFlowBranch(null));
         }
         
         public void Start(Player p1, Player p2)

@@ -6,6 +6,7 @@ using Metozis.Cardistry.Internal.Management;
 
 namespace Metozis.Cardistry.Internal.GameFlow
 {
+    [Serializable]
     public partial class Game
     {
         public GameCycle Cycle;

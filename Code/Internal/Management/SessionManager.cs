@@ -43,6 +43,7 @@ namespace Metozis.Cardistry.Internal.Management
                 AllyHand = AllyHand,
                 Scheduler = new GameScheduler()
             };
+            CurrentGame.Start(PlayerOne, PlayerTwo);
         }
     }
 }

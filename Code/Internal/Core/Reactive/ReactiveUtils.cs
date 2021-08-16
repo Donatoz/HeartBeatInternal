@@ -15,7 +15,7 @@ namespace Metozis.Cardistry.Internal.Core.Reactive
         private static IEnumerator DelayRoutine(float delay, Action ctx)
         {
             yield return new WaitForSeconds(delay);
-            ctx.Invoke();
+            ctx?.Invoke();
         }
 
         public static Coroutine Interval(float interval, Action ctx, Func<bool> stop)
@@ -27,7 +27,7 @@ namespace Metozis.Cardistry.Internal.Core.Reactive
         {
             while (!stop())
             {
-                ctx();
+                ctx?.Invoke();
                 yield return new WaitForSeconds(interval);
             }
         }
