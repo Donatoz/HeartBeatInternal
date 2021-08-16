@@ -5,6 +5,7 @@ using Bolt;
 using Ludiq;
 
 using Metozis.Cardistry.Internal.Core.Construct;
+using Metozis.Cardistry.Internal.Core.Entities.Units;
 using Metozis.Cardistry.Internal.Core.Interaction;
 using Metozis.Cardistry.Internal.Core.Modularity;
 using Metozis.Cardistry.Internal.Core.Orders;
@@ -12,6 +13,7 @@ using Metozis.Cardistry.Internal.GameFlow;
 using Metozis.Cardistry.Internal.GameFlow.LifeCycle;
 using Metozis.Cardistry.Internal.Meta;
 using Metozis.Cardistry.Internal.Meta.Core;
+using Metozis.Cardistry.Internal.Meta.Core.Units;
 using Metozis.Cardistry.Internal.Meta.Descriptors;
 
 using Sirenix.OdinInspector;
@@ -42,6 +44,8 @@ namespace Metozis.Cardistry.Internal.Core.Entities
         private FollowModule follow;
         private AnimationModule anim;
         private UnitVisualModule visual;
+
+        protected List<Skill> skills = new List<Skill>();
         
         private void Awake()
         {
@@ -148,6 +152,11 @@ namespace Metozis.Cardistry.Internal.Core.Entities
                 var order = new FlowOrder(orderSlot.OverrideLogic ? orderSlot.OverrideLogic : orderMeta.OrderLogicMacro);
                 AvailableOrders[orderSlot.OrderName] = order;
             }
+
+            foreach (var skill in unit.Skills)
+            {
+                skills.Add(new Skill(this, skill.Meta));
+            }
             
             visual.CreateScheme(unit.VisualScheme);
             visual.Refresh(descriptor.GetMeta(), true);
@@ -161,6 +170,11 @@ namespace Metozis.Cardistry.Internal.Core.Entities
         public void GiveOrder(IOrder order, params object[] args)
         {
             Game.Current.Scheduler.Schedule(ScheduleContext.FromOrder(order, this, args));
+        }
+
+        public void CastSkill(int localId)
+        {
+            skills[localId].Cast();
         }
     }
 }
